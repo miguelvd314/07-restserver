@@ -1,12 +1,16 @@
 const express = require('express');
 const cors = require('cors');
+const {dbConnection} = require('../database/config');
 
 class Server {
     constructor() {
         this.app = express();
-        this.port = process.env.PORT;
+        this.port = process.env.PORT || 3000;
         this.usuariosPath = '/api/usuarios';
     
+        //Conexion
+        this.conectarDB();
+
         // Middleware
         this.middlewares();
     
@@ -14,6 +18,10 @@ class Server {
         this.routes();
     }
     
+    async conectarDB(){
+        await dbConnection();
+    }
+
     // Método donde se define el middleware que publicará la carpeta 'public'
     middlewares() {
         this.app.use(cors());
